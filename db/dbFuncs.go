@@ -47,11 +47,11 @@ func FetchURL(database *sql.DB, url string) string {
 		var row = GenerateURL(database, url)
 
 		WriteUrl(database, row)
-		return row.new_link + DOMAIN
+		return DOMAIN + row.new_link
 	}
 
-	log.Printf("Found %s. Sending %s\n", url, new_url.new_link+DOMAIN)
-	return new_url.new_link + DOMAIN
+	log.Printf("Found %s. Sending %s\n", url, DOMAIN+new_url.new_link)
+	return DOMAIN + new_url.new_link
 }
 
 // Generates a new shortened url
@@ -74,5 +74,19 @@ func GenerateURL(database *sql.DB, url string) DatabaseRow {
 		old_link: url,
 		new_link: hash[offset : offset+5],
 	}
+}
 
+func GetUrlFromShort(database *sql.DB, shortUrl string) string {
+	rows, err := database.Query("SELECT * FROM urls WHERE new_link=?", shortUrl)
+	if err != nil {
+		log.Println(err)
+	}
+
+	var row DatabaseRow
+	if rows.Next() {
+		rows.Scan(&row.hash, &row.old_link, &row.new_link)
+		return row.old_link
+	}
+
+	return ""
 }

@@ -11,7 +11,7 @@ import (
 
 const (
 	DATABASE_LOCATION string = "./urls.db"
-	DOMAIN            string = ".link.t02smith.com"
+	DOMAIN            string = "http://link.t02smith.com/"
 )
 
 var Database *sql.DB = OpenConnection()
@@ -70,7 +70,7 @@ func WriteUrl(database *sql.DB, row DatabaseRow) {
 		log.Fatalln(err)
 	}
 
-	log.Printf("%s -> %s: Record added successfully\n", row.old_link, row.new_link+DOMAIN)
+	log.Printf("%s -> %s: Record added successfully\n", row.old_link, DOMAIN+row.new_link)
 }
 
 // Return the sha1 hash of a string

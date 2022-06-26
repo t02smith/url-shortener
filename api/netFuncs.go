@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/gorilla/mux"
 	"t02smith.com/url-shortener/db"
 )
 
@@ -21,4 +22,12 @@ func GetURL(w http.ResponseWriter, r *http.Request) {
 
 	new_url := db.FetchURL(db.Database, req.Url)
 	w.Write([]byte(new_url))
+}
+
+func RedirectURL(w http.ResponseWriter, r *http.Request) {
+	vars := mux.Vars(r)
+	shortUrl := vars["shortUrl"]
+
+	var oldUrl string = db.GetUrlFromShort(db.Database, shortUrl)
+	http.Redirect(w, r, oldUrl, http.StatusPermanentRedirect)
 }
