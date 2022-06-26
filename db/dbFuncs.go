@@ -6,6 +6,7 @@ import (
 	"log"
 )
 
+// Check if a URL has already been stored in the DB
 func UrlExists(database *sql.DB, url string) DatabaseRow {
 	hash := hex.EncodeToString(Hash(url))
 	rows, err := database.Query("SELECT * FROM urls WHERE hash = ?1;", hash)
@@ -26,6 +27,7 @@ func UrlExists(database *sql.DB, url string) DatabaseRow {
 
 }
 
+// Check if a url has already been used
 func NewUrlExists(database *sql.DB, url string) bool {
 	rows, err := database.Query("SELECT * FROM urls WHERE new_link=?1", url)
 
@@ -36,21 +38,26 @@ func NewUrlExists(database *sql.DB, url string) bool {
 	return rows.Next()
 }
 
+// Fetches the shortened URL from the DB or generates it
 func FetchURL(database *sql.DB, url string) string {
 	var new_url DatabaseRow = UrlExists(database, url)
 
 	if (DatabaseRow{} == new_url) {
-		log.Println("No URL found. Generating url")
+		log.Printf("%s not found. Generating shortened url\n", url)
 		var row = GenerateURL(database, url)
+
 		WriteUrl(database, row)
 		return row.new_link + DOMAIN
 	}
 
+	log.Printf("Found %s. Sending %s\n", url, new_url.new_link+DOMAIN)
 	return new_url.new_link + DOMAIN
 }
 
+// Generates a new shortened url
 func GenerateURL(database *sql.DB, url string) DatabaseRow {
-	log.Println("Generating url...")
+	log.Printf("Generating url for %s...\n", url)
+
 	hash := hex.EncodeToString(Hash(url))
 	var offset int = 0
 
