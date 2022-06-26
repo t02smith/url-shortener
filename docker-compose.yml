@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: url-shortener
+    image: url-shortener
+    build:
+      context: .
+      target: dev
+    ports:
+      - 8080:8080

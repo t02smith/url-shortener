@@ -4,12 +4,10 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"log"
-
-	urlshortener "t02smith.com/url-shortener/url-shortener"
 )
 
 func UrlExists(database *sql.DB, url string) DatabaseRow {
-	hash := hex.EncodeToString(urlshortener.Hash(url))
+	hash := hex.EncodeToString(Hash(url))
 	rows, err := database.Query("SELECT * FROM urls WHERE hash = ?1;", hash)
 
 	if err != nil {
@@ -45,15 +43,15 @@ func FetchURL(database *sql.DB, url string) string {
 		log.Println("No URL found. Generating url")
 		var row = GenerateURL(database, url)
 		WriteUrl(database, row)
-		return row.new_link + urlshortener.DOMAIN
+		return row.new_link + DOMAIN
 	}
 
-	return new_url.new_link + urlshortener.DOMAIN
+	return new_url.new_link + DOMAIN
 }
 
 func GenerateURL(database *sql.DB, url string) DatabaseRow {
 	log.Println("Generating url...")
-	hash := hex.EncodeToString(urlshortener.Hash(url))
+	hash := hex.EncodeToString(Hash(url))
 	var offset int = 0
 
 	for offset < (len(hash) - 5) {

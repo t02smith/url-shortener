@@ -1,6 +1,7 @@
 package db
 
 import (
+	"crypto/sha1"
 	"database/sql"
 	"log"
 
@@ -8,8 +9,11 @@ import (
 )
 
 const (
-	DATABASE string = "./urls.db"
+	DATABASE_LOCATION string = "./urls.db"
+	DOMAIN            string = ".link.t02smith.com"
 )
+
+var Database *sql.DB = OpenConnection()
 
 type DatabaseRow struct {
 	hash     string // the sha1 hash of the old domain
@@ -18,7 +22,7 @@ type DatabaseRow struct {
 }
 
 func OpenConnection() *sql.DB {
-	database, err := sql.Open("sqlite3", DATABASE)
+	database, err := sql.Open("sqlite3", DATABASE_LOCATION)
 
 	if err != nil {
 		log.Fatal(err)
@@ -56,4 +60,10 @@ func WriteUrl(database *sql.DB, row DatabaseRow) {
 	}
 
 	log.Println("Record added successfully")
+}
+
+func Hash(s string) []byte {
+	hasher := sha1.New()
+	hasher.Write([]byte(s))
+	return hasher.Sum(nil)
 }
