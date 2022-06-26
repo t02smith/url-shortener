@@ -4,6 +4,7 @@ import (
 	"crypto/sha1"
 	"database/sql"
 	"log"
+	"os"
 
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -22,12 +23,19 @@ type DatabaseRow struct {
 }
 
 func OpenConnection() *sql.DB {
+	f, err := os.Create(DATABASE_LOCATION)
+	if err != nil {
+		log.Fatal(err)
+	}
+	f.Close()
+
 	database, err := sql.Open("sqlite3", DATABASE_LOCATION)
 
 	if err != nil {
 		log.Fatal(err)
 	}
 
+	CreateUrlTable(database)
 	return database
 }
 

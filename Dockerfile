@@ -1,4 +1,4 @@
-FROM tetafro/golang-gcc:latest AS dev
+FROM golang AS dev
 
 WORKDIR /app
 COPY . .
