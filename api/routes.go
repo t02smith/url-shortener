@@ -10,11 +10,12 @@ import (
 
 // Main routing function to handle requests
 func HandleRequests() {
-	log.Println("Starting server on port 8080")
+	log.Println("Starting server on port " + util.PORT)
 
 	r := mux.NewRouter()
-	r.HandleFunc("/{shortUrl}", RedirectURL)
-	r.HandleFunc(util.API_PATH+"/getURL", GetURL)
+	r.HandleFunc("/", Index).Methods("GET", "POST")
+	r.HandleFunc("/{shortUrl}", RedirectURL).Methods("GET")
+	r.HandleFunc(util.API_PATH+"/getURL", GetURL).Methods("GET")
 
 	http.ListenAndServe(util.PORT, r)
 }

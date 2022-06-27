@@ -9,10 +9,14 @@ redirect to the correct page.
 
 > *e.g. **t02smith.com** may be allocated **link.t02smith.com/56735***
 
+This project *should* currently being run on a **Raspberry Pi 3B** at [http://link.t02smith.com:8080](http://link.t02smith.com:8080)
+
 ![Go Badge](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=fff&style=for-the-badge)
 ![SQLite Badge](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=fff&style=for-the-badge)
 ![Docker Badge](https://img.shields.io/badge/Docker-2496ED?logo=docker&logoColor=fff&style=for-the-badge)
 ![Raspberry Pi Badge](https://img.shields.io/badge/Raspberry%20Pi-A22846?logo=raspberrypi&logoColor=fff&style=for-the-badge)
+![HTML5 Badge](https://img.shields.io/badge/HTML5-E34F26?logo=html5&logoColor=fff&style=for-the-badge)
+![CSS3 Badge](https://img.shields.io/badge/CSS3-1572B6?logo=css3&logoColor=fff&style=for-the-badge)
 
 ## How to Run
 
@@ -69,3 +73,5 @@ content: {
 - Webpages:
   - enter URL and receive shortened copy
   - error pages (redirect error)
+- Unit testing
+- Serve static folder
