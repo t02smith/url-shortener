@@ -17,9 +17,9 @@ type Request struct {
 func HandleRequests() {
 	log.Println("Starting server on port 8080")
 
-	r := mux.NewRouter().StrictSlash(true)
-	r.HandleFunc(PATH_START+"/getURL", GetURL)
+	r := mux.NewRouter()
 	r.HandleFunc("/{shortUrl}", RedirectURL)
+	r.HandleFunc(PATH_START+"/getURL", GetURL)
 
 	http.ListenAndServe(":8080", r)
 }

@@ -39,11 +39,19 @@ func CreateUrlTable(database *sql.DB) {
 
 // Opens a new database connection
 func OpenConnection() *sql.DB {
-	f, err := os.Create(DATABASE_LOCATION)
-	if err != nil {
-		log.Fatal(err)
+	_, error := os.Stat(DATABASE_LOCATION)
+
+	if error != nil {
+		if !os.IsNotExist(error) {
+			log.Fatal(error)
+		} else {
+			f, err := os.Create(DATABASE_LOCATION)
+			if err != nil {
+				log.Fatal(err)
+			}
+			f.Close()
+		}
 	}
-	f.Close()
 
 	database, err := sql.Open("sqlite3", DATABASE_LOCATION)
 

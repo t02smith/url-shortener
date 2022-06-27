@@ -35,7 +35,9 @@ func NewUrlExists(database *sql.DB, url string) bool {
 		log.Fatal(err)
 	}
 
-	return rows.Next()
+	defer rows.Close()
+	var exists bool = rows.Next()
+	return exists
 }
 
 // Fetches the shortened URL from the DB or generates it
@@ -76,11 +78,14 @@ func GenerateURL(database *sql.DB, url string) DatabaseRow {
 	}
 }
 
+// Gets a link from the shortened hash value
 func GetUrlFromShort(database *sql.DB, shortUrl string) string {
 	rows, err := database.Query("SELECT * FROM urls WHERE new_link=?", shortUrl)
 	if err != nil {
 		log.Println(err)
 	}
+
+	defer rows.Close()
 
 	var row DatabaseRow
 	if rows.Next() {
@@ -88,5 +93,6 @@ func GetUrlFromShort(database *sql.DB, shortUrl string) string {
 		return row.old_link
 	}
 
-	return ""
+	// TODO redirect to not found page
+	return "/"
 }
