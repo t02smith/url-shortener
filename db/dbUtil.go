@@ -6,12 +6,9 @@ import (
 	"log"
 	"os"
 
-	_ "github.com/mattn/go-sqlite3"
-)
+	"t02smith.com/url-shortener/util"
 
-const (
-	DATABASE_LOCATION string = "./urls.db"
-	DOMAIN            string = "http://link.t02smith.com/"
+	_ "github.com/mattn/go-sqlite3"
 )
 
 var Database *sql.DB = OpenConnection()
@@ -39,13 +36,13 @@ func CreateUrlTable(database *sql.DB) {
 
 // Opens a new database connection
 func OpenConnection() *sql.DB {
-	_, error := os.Stat(DATABASE_LOCATION)
+	_, error := os.Stat(util.DATABASE_LOCATION)
 
 	if error != nil {
 		if !os.IsNotExist(error) {
 			log.Fatal(error)
 		} else {
-			f, err := os.Create(DATABASE_LOCATION)
+			f, err := os.Create(util.DATABASE_LOCATION)
 			if err != nil {
 				log.Fatal(err)
 			}
@@ -53,7 +50,7 @@ func OpenConnection() *sql.DB {
 		}
 	}
 
-	database, err := sql.Open("sqlite3", DATABASE_LOCATION)
+	database, err := sql.Open("sqlite3", util.DATABASE_LOCATION)
 
 	if err != nil {
 		log.Fatal(err)
@@ -78,7 +75,7 @@ func WriteUrl(database *sql.DB, row DatabaseRow) {
 		log.Fatalln(err)
 	}
 
-	log.Printf("%s -> %s: Record added successfully\n", row.old_link, DOMAIN+row.new_link)
+	log.Printf("%s -> %s: Record added successfully\n", row.old_link, util.DOMAIN+row.new_link)
 }
 
 // Return the sha1 hash of a string

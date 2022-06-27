@@ -5,13 +5,8 @@ import (
 	"net/http"
 
 	"github.com/gorilla/mux"
+	"t02smith.com/url-shortener/util"
 )
-
-const PATH_START string = "/api/v1"
-
-type Request struct {
-	Url string
-}
 
 // Main routing function to handle requests
 func HandleRequests() {
@@ -19,7 +14,7 @@ func HandleRequests() {
 
 	r := mux.NewRouter()
 	r.HandleFunc("/{shortUrl}", RedirectURL)
-	r.HandleFunc(PATH_START+"/getURL", GetURL)
+	r.HandleFunc(util.API_PATH+"/getURL", GetURL)
 
-	http.ListenAndServe(":8080", r)
+	http.ListenAndServe(util.PORT, r)
 }

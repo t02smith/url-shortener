@@ -4,6 +4,8 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"log"
+
+	"t02smith.com/url-shortener/util"
 )
 
 // Check if a URL has already been stored in the DB
@@ -49,11 +51,11 @@ func FetchURL(database *sql.DB, url string) string {
 		var row = GenerateURL(database, url)
 
 		WriteUrl(database, row)
-		return DOMAIN + row.new_link
+		return util.DOMAIN + row.new_link
 	}
 
-	log.Printf("Found %s. Sending %s\n", url, DOMAIN+new_url.new_link)
-	return DOMAIN + new_url.new_link
+	log.Printf("Found %s. Sending %s\n", url, util.DOMAIN+new_url.new_link)
+	return util.DOMAIN + new_url.new_link
 }
 
 // Generates a new shortened url
@@ -63,8 +65,8 @@ func GenerateURL(database *sql.DB, url string) DatabaseRow {
 	hash := hex.EncodeToString(Hash(url))
 	var offset int = 0
 
-	for offset < (len(hash) - 5) {
-		if NewUrlExists(database, hash[offset:offset+5]) {
+	for offset < (len(hash) - util.HASH_SIZE) {
+		if NewUrlExists(database, hash[offset:offset+util.HASH_SIZE]) {
 			offset++
 		} else {
 			break
@@ -74,7 +76,7 @@ func GenerateURL(database *sql.DB, url string) DatabaseRow {
 	return DatabaseRow{
 		hash:     hash,
 		old_link: url,
-		new_link: hash[offset : offset+5],
+		new_link: hash[offset : offset+util.HASH_SIZE],
 	}
 }
 
