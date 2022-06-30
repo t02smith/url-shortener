@@ -6,7 +6,7 @@ const (
 	DATABASE_LOCATION string = "./urls.db"
 
 	// Domain name for shortened URLs
-	DOMAIN string = "http://link.t02smith.com:8080/"
+	DOMAIN string = "http://link.t02smith.com/"
 
 	// Size of the shortened url hash
 	// 0 < HASH_SIZE <= 40
@@ -17,4 +17,7 @@ const (
 
 	// Default port to listen on
 	PORT string = ":8080"
+
+	// How long a link is valid for -> 28 days
+	LINK_LIFETIME int64 = 1
 )

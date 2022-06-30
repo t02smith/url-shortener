@@ -33,6 +33,6 @@ func RedirectURL(w http.ResponseWriter, r *http.Request) {
 	shortUrl := vars["shortUrl"]
 
 	var oldUrl string = db.GetUrlFromShort(db.Database, shortUrl)
-	http.Redirect(w, r, "http://"+oldUrl, http.StatusPermanentRedirect)
+	http.Redirect(w, r, "http://"+oldUrl, http.StatusTemporaryRedirect)
 	log.Println("Redirected to " + oldUrl)
 }
