@@ -110,13 +110,13 @@ func GetUrlFromShort(database *sql.DB, shortUrl string) string {
 	if rows.Next() {
 		rows.Scan(&row.hash, &row.old_link, &row.new_link, &row.expiry)
 
-		log.Println(row.expiry, time.Now().Unix())
+		log.Println(row.expiry, time.Now().Unix(), row.expiry < time.Now().Unix())
 
-		if row.expiry < time.Now().Unix() {
+		if row.expiry >= time.Now().Unix() {
 			return row.old_link
 		}
 	}
 
 	// TODO redirect to not found page
-	return "/"
+	return util.DOMAIN + "/error/not-found"
 }

@@ -9,7 +9,7 @@ redirect to the correct page.
 
 > *e.g. **t02smith.com** may be allocated **link.t02smith.com/56735***
 
-This project *should* currently being run on a **Raspberry Pi 3B** at [http://link.t02smith.com:8080](http://link.t02smith.com)
+~~This project *should* currently being run on a **Raspberry Pi 3B** at [http://link.t02smith.com](http://link.t02smith.com)~~
 
 ![Go Badge](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=fff&style=for-the-badge)
 ![SQLite Badge](https://img.shields.io/badge/SQLite-003B57?logo=sqlite&logoColor=fff&style=for-the-badge)
@@ -68,10 +68,10 @@ content: {
 
 ## TODO
 
-- shortened urls should have time limits *e.g. by day*
+- ~~shortened urls should have time limits *e.g. by day*~~
 - request field in the get request to ask for a specific URL
 - Webpages:
   - enter URL and receive shortened copy
-  - error pages (redirect error)
+  - error pages (redirect, timeout error)
 - Unit testing
 - Serve static folder

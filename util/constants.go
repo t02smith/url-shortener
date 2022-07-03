@@ -19,5 +19,5 @@ const (
 	PORT string = ":8080"
 
 	// How long a link is valid for -> 28 days
-	LINK_LIFETIME int64 = 1
+	LINK_LIFETIME int64 = 1000000
 )
