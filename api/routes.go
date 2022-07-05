@@ -17,5 +17,9 @@ func HandleRequests() {
 	r.HandleFunc("/{shortUrl}", RedirectURL).Methods("GET")
 	r.HandleFunc(util.API_PATH+"/getURL", GetURL).Methods("POST")
 
-	http.ListenAndServe(util.PORT, r)
+	go http.ListenAndServe(util.PORT, r)
+
+	fs := http.NewServeMux()
+	fs.Handle("/", http.FileServer(http.Dir("./static/style")))
+	http.ListenAndServe(":6060", fs)
 }
