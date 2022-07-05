@@ -19,6 +19,7 @@ func HandleRequests() {
 
 	go http.ListenAndServe(util.PORT, r)
 
+	log.Println("Serving files on port :6060")
 	fs := http.NewServeMux()
 	fs.Handle("/", http.FileServer(http.Dir("./static/style")))
 	http.ListenAndServe(":6060", fs)

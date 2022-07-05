@@ -69,7 +69,8 @@ content: {
 - ~~shortened urls should have time limits *e.g. by day*~~
 - ~~request field in the get request to ask for a specific URL~~
 - Webpages:
-  - enter URL and receive shortened copy
+  - ~~enter URL and receive shortened copy~~
+    - ~~Add requested URL field~~
   - error pages (redirect, timeout error)
 - Unit testing
-- Serve static folder
+- ~~Serve static folder~~

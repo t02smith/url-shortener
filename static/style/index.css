@@ -27,10 +27,13 @@ form {
 
 input[type="text"] {
     padding: 0.5rem;
-    border-radius: 8px 0 0 8px;
     border: none;
     height: 2rem;
     min-width: 250px;
+}
+
+input[type="text"]:first-child {
+    border-radius: 8px 0 0 8px;
 }
 
 button {

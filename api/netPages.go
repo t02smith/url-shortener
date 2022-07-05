@@ -29,7 +29,7 @@ func Index(w http.ResponseWriter, r *http.Request) {
 		return
 	case "POST":
 		r.ParseForm()
-		var Form IndexForm = IndexForm{db.FetchURL(db.Database, r.Form["url"][0])}
+		var Form IndexForm = IndexForm{db.RequestURL(db.Database, r.Form["url"][0], r.Form["request"][0])}
 		t.ExecuteTemplate(w, "index.html", Form)
 		return
 	}
