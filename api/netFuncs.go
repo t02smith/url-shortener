@@ -21,7 +21,8 @@ func GetURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	new_url := db.FetchURL(db.Database, req.Url)
+	new_url := db.RequestURL(db.Database, req.Url, req.Request)
+
 	log.Println("Sending " + new_url)
 	w.Write([]byte(new_url))
 }

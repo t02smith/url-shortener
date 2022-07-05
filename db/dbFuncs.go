@@ -26,8 +26,17 @@ func UrlExists(database *sql.DB, url string) DatabaseRow {
 
 	var row DatabaseRow
 	rows.Scan(&row.hash, &row.old_link, &row.new_link, &row.expiry)
-	return row
 
+	// delete record if it has expired
+	if (row != DatabaseRow{}) && row.expiry < time.Now().Unix() {
+		log.Printf("Link expired for %s. Removing link.\n", url)
+		statement, _ := database.Prepare("DELETE FROM urls WHERE hash=?1;")
+		statement.Exec(row.hash)
+
+		return DatabaseRow{}
+	}
+
+	return row
 }
 
 // Check if a url has already been used
@@ -46,15 +55,6 @@ func NewUrlExists(database *sql.DB, url string) bool {
 // Fetches the shortened URL from the DB or generates it
 func FetchURL(database *sql.DB, url string) string {
 	var new_url DatabaseRow = UrlExists(database, url)
-
-	// delete record if it has expired
-	if (new_url != DatabaseRow{}) && new_url.expiry < time.Now().Unix() {
-		log.Printf("Link expired for %s. Generating new link.\n", url)
-		statement, _ := database.Prepare("DELETE FROM urls WHERE hash=?1;")
-		statement.Exec(new_url.hash)
-
-		new_url = DatabaseRow{}
-	}
 
 	// generate a new URL
 	if (DatabaseRow{} == new_url) {
@@ -92,6 +92,31 @@ func GenerateURL(database *sql.DB, url string) DatabaseRow {
 	}
 }
 
+// Generates a requested URL
+func RequestURL(database *sql.DB, url string, requestedUrl string) string {
+	if len(requestedUrl) == 0 {
+		return FetchURL(database, url)
+	}
+
+	var reqUrl DatabaseRow = UrlExists(database, requestedUrl)
+
+	// url available
+	if (reqUrl == DatabaseRow{}) {
+		log.Printf("%s not found. Generating shortened url\n", requestedUrl)
+		WriteUrl(database, DatabaseRow{
+			hash:     hex.EncodeToString(util.Hash(url)),
+			old_link: url,
+			new_link: requestedUrl,
+			expiry:   time.Now().Unix() + util.LINK_LIFETIME,
+		})
+
+		return util.DOMAIN + requestedUrl
+	}
+
+	log.Printf("%s not available.", requestedUrl)
+	return FetchURL(database, url)
+}
+
 // Gets a link from the shortened hash value
 func GetUrlFromShort(database *sql.DB, shortUrl string) string {
 	statement, err := database.Prepare("SELECT * FROM urls WHERE new_link=?")
@@ -109,8 +134,6 @@ func GetUrlFromShort(database *sql.DB, shortUrl string) string {
 	var row DatabaseRow
 	if rows.Next() {
 		rows.Scan(&row.hash, &row.old_link, &row.new_link, &row.expiry)
-
-		log.Println(row.expiry, time.Now().Unix(), row.expiry < time.Now().Unix())
 
 		if row.expiry >= time.Now().Unix() {
 			return row.old_link

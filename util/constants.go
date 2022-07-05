@@ -18,6 +18,6 @@ const (
 	// Default port to listen on
 	PORT string = ":8080"
 
-	// How long a link is valid for -> 28 days
-	LINK_LIFETIME int64 = 1000000
+	// How long a link is valid for -> 7 days
+	LINK_LIFETIME int64 = 60 * 60 * 24 * 7
 )

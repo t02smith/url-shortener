@@ -59,9 +59,7 @@ your needs. Currently included constants are:
 ```javascript
 path: /getURL
 content: {
-    url: string // the url you want to shorten
-    
-    // TODO
+    url: string     // the url you want to shorten
     request: string // request a mapping
 }
 ```
@@ -69,7 +67,7 @@ content: {
 ## TODO
 
 - ~~shortened urls should have time limits *e.g. by day*~~
-- request field in the get request to ask for a specific URL
+- ~~request field in the get request to ask for a specific URL~~
 - Webpages:
   - enter URL and receive shortened copy
   - error pages (redirect, timeout error)
