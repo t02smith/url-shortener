@@ -8,7 +8,7 @@ import (
 type DatabaseRow struct {
 	hash     string // (PRIMARY KEY) the sha1 hash of the old domain
 	old_link string // the original domain to redirect to
-	new_link string // the offset of the hash substring for the link
+	New_link string // the offset of the hash substring for the link
 	expiry   int64  // timestamp for when it expires
 }
 

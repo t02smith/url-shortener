@@ -39,19 +39,20 @@ func OpenConnection() *sql.DB {
 }
 
 // Write a new record to the url table
-func WriteUrl(database *sql.DB, row DatabaseRow) {
+func WriteUrl(database *sql.DB, row *DatabaseRow) {
 	statement, err := database.Prepare(`INSERT INTO urls VALUES (
 			?, ?, ?, ?
-		)`)
+		);`)
 
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	_, err = statement.Exec(row.hash, row.old_link, row.new_link, row.expiry)
+	log.Printf("Inserting %s, %s, %s, %d\n", row.hash, row.old_link, row.New_link, row.expiry)
+	_, err = statement.Exec(row.hash, row.old_link, row.New_link, row.expiry)
 	if err != nil {
 		log.Fatalln(err)
 	}
 
-	log.Printf("%s -> %s: Record added successfully\n", row.old_link, util.DOMAIN+row.new_link)
+	log.Printf("%s -> %s: Record added successfully\n", row.old_link, util.DOMAIN+row.New_link)
 }

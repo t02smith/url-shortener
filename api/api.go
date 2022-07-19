@@ -10,7 +10,7 @@ import (
 )
 
 // Replies with a shortened url or an error code
-func GetURL(w http.ResponseWriter, r *http.Request) {
+func NewURL(w http.ResponseWriter, r *http.Request) {
 	log.Println("Getting URL")
 	var req Request
 
@@ -21,19 +21,21 @@ func GetURL(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	new_url := db.RequestURL(db.Database, req.Url, req.Request)
+	newUrl := db.RequestURL(db.Database, req.Url, req.Request)
 
-	log.Println("Sending " + new_url)
-	w.Write([]byte(new_url))
+	log.Println("Sending " + newUrl.New_link)
+
+	w.Write([]byte(newUrl.New_link))
 }
 
 // Redirect a URL to a given short url if one exists
 func RedirectURL(w http.ResponseWriter, r *http.Request) {
-	log.Println("Redirecting URL...")
 	vars := mux.Vars(r)
 	shortUrl := vars["shortUrl"]
+	log.Printf("Redirecting URL %s\n", shortUrl)
 
 	var oldUrl string = db.GetUrlFromShort(db.Database, shortUrl)
+	log.Printf("Found %s\n", oldUrl)
 	http.Redirect(w, r, "http://"+oldUrl, http.StatusTemporaryRedirect)
 	log.Println("Redirected to " + oldUrl)
 }

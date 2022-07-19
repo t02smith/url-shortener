@@ -6,7 +6,7 @@ const (
 	DATABASE_LOCATION string = "./urls.db"
 
 	// Domain name for shortened URLs
-	DOMAIN string = "http://link.t02smith.com/"
+	DOMAIN string = "http://localhost:8080"
 
 	// Size of the shortened url hash
 	// 0 < HASH_SIZE <= 40

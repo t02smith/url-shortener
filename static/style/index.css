@@ -32,10 +32,6 @@ input[type="text"] {
     min-width: 250px;
 }
 
-input[type="text"]:first-child {
-    border-radius: 8px 0 0 8px;
-}
-
 button {
     padding: 0.5rem;
     height: 3rem;
